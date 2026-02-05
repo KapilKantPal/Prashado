@@ -2,7 +2,7 @@
 
 import React, { useState } from 'react';
 import { motion, AnimatePresence } from 'framer-motion';
-import { Plus, Minus, MessageCircle, Utensils, ChefHat, X, ChevronUp, ChevronDown, ShoppingBag } from 'lucide-react';
+import { Plus, Minus, MessageCircle, Utensils, ChefHat, X, ChevronUp, ShoppingBag } from 'lucide-react';
 
 import { MENU_DATA, MenuItem } from '@/data/menu';
 import {
@@ -39,16 +39,6 @@ interface CartItem {
 export const MenuCatalog = () => {
     const [cart, setCart] = useState<{ [key: string]: CartItem }>({});
     const [isCartOpen, setIsCartOpen] = useState(false);
-    // Initialize with all categories open
-    const [expandedCategories, setExpandedCategories] = useState<string[]>(MENU_DATA.map(c => c.id));
-
-    const toggleCategory = (categoryId: string) => {
-        setExpandedCategories(prev =>
-            prev.includes(categoryId)
-                ? prev.filter(id => id !== categoryId)
-                : [...prev, categoryId]
-        );
-    };
 
     const addToCart = (item: MenuItem) => {
         setCart((prev) => {
@@ -122,108 +112,85 @@ export const MenuCatalog = () => {
                     const DoodleComponent = getDoodle(category.doodle);
                     return (
                         <div key={category.id} className="space-y-8">
-                            <div
-                                className="flex items-center justify-between border-l-4 border-primary pl-4 cursor-pointer group"
-                                onClick={() => toggleCategory(category.id)}
-                            >
-                                <div className="flex items-center gap-4">
-                                    {DoodleComponent && (
-                                        <div className="w-12 h-12">
-                                            <DoodleComponent />
-                                        </div>
-                                    )}
-                                    <h3 className={`text-2xl md:text-3xl font-bold ${category.color}`}>
-                                        {category.title}
-                                    </h3>
-                                </div>
-                                <div className={`p-2 rounded-full bg-white/5 group-hover:bg-white/10 transition-colors`}>
-                                    <ChevronDown
-                                        className={`text-white transition-transform duration-300 ${expandedCategories.includes(category.id) ? 'rotate-180' : ''}`}
-                                        size={24}
-                                    />
-                                </div>
+                            <div className="flex items-center gap-4 border-l-4 border-primary pl-4">
+                                {DoodleComponent && (
+                                    <div className="w-12 h-12">
+                                        <DoodleComponent />
+                                    </div>
+                                )}
+                                <h3 className={`text-2xl md:text-3xl font-bold ${category.color}`}>
+                                    {category.title}
+                                </h3>
                             </div>
 
-                            <AnimatePresence>
-                                {expandedCategories.includes(category.id) && (
+                            <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
+                                {category.items.map((item) => (
                                     <motion.div
-                                        initial={{ height: 0, opacity: 0 }}
-                                        animate={{ height: "auto", opacity: 1 }}
-                                        exit={{ height: 0, opacity: 0 }}
-                                        transition={{ duration: 0.3, ease: "easeInOut" }}
-                                        className="overflow-hidden"
+                                        key={item.id}
+                                        whileHover={{ y: -5 }}
+                                        className="bg-card hover:bg-card-hover border border-white/5 rounded-2xl p-4 flex gap-4 transition-colors group"
                                     >
-                                        <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6 pt-4">
-                                            {category.items.map((item) => (
-                                                <motion.div
-                                                    key={item.id}
-                                                    whileHover={{ y: -5 }}
-                                                    className="bg-card hover:bg-card-hover border border-white/5 rounded-2xl p-4 flex gap-4 transition-colors group"
-                                                >
-                                                    {/* Image Placeholder */}
-                                                    <div className="w-24 h-24 shrink-0 bg-gray-800 rounded-xl overflow-hidden relative">
-                                                        {/* Replace with <Image> when available */}
-                                                        <div className="w-full h-full bg-gradient-to-br from-gray-700 to-gray-800 flex items-center justify-center text-gray-500 text-xs text-center p-1 overflow-hidden">
-                                                            {item.image ? (
-                                                                <img src={item.image} alt={item.name} className="w-full h-full object-cover" />
-                                                            ) : (
-                                                                "No Image"
-                                                            )}
-                                                        </div>
-                                                    </div>
+                                        {/* Image Placeholder */}
+                                        <div className="w-24 h-24 shrink-0 bg-gray-800 rounded-xl overflow-hidden relative">
+                                            {/* Replace with <Image> when available */}
+                                            <div className="w-full h-full bg-gradient-to-br from-gray-700 to-gray-800 flex items-center justify-center text-gray-500 text-xs text-center p-1 overflow-hidden">
+                                                {item.image ? (
+                                                    <img src={item.image} alt={item.name} className="w-full h-full object-cover" />
+                                                ) : (
+                                                    "No Image"
+                                                )}
+                                            </div>
+                                        </div>
 
-                                                    <div className="flex flex-col justify-between flex-grow">
-                                                        <div>
-                                                            <h4 className="font-semibold text-lg text-white group-hover:text-primary transition-colors">
-                                                                {item.name}
-                                                            </h4>
-                                                            {item.description && (
-                                                                <p className="text-sm text-gray-400 line-clamp-2 mt-1">{item.description}</p>
-                                                            )}
-                                                        </div>
+                                        <div className="flex flex-col justify-between flex-grow">
+                                            <div>
+                                                <h4 className="font-semibold text-lg text-white group-hover:text-primary transition-colors">
+                                                    {item.name}
+                                                </h4>
+                                                {item.description && (
+                                                    <p className="text-sm text-gray-400 line-clamp-2 mt-1">{item.description}</p>
+                                                )}
+                                            </div>
 
-                                                        <div className="flex items-center justify-between mt-3">
-                                                            <span className="font-bold text-secondary">₹{item.price}</span>
+                                            <div className="flex items-center justify-between mt-3">
+                                                <span className="font-bold text-secondary">₹{item.price}</span>
 
-                                                            <div className="flex items-center gap-2 bg-white/5 rounded-full p-1 h-10 min-w-[40px] justify-center transition-all duration-300">
-                                                                {cart[item.id] ? (
-                                                                    <>
-                                                                        <button
-                                                                            onClick={(e) => { e.stopPropagation(); removeFromCart(item.id); }}
-                                                                            className="w-8 h-8 flex items-center justify-center hover:bg-white/10 rounded-full transition-colors text-red-400"
-                                                                            title="Remove"
-                                                                        >
-                                                                            <Minus size={16} />
-                                                                        </button>
-                                                                        <span className="text-sm font-bold text-primary w-6 text-center">
-                                                                            {cart[item.id].quantity}
-                                                                        </span>
-                                                                        <button
-                                                                            onClick={(e) => { e.stopPropagation(); addToCart(item); }}
-                                                                            className="w-8 h-8 flex items-center justify-center hover:bg-white/10 rounded-full transition-colors text-green-400"
-                                                                            title="Add"
-                                                                        >
-                                                                            <Plus size={16} />
-                                                                        </button>
-                                                                    </>
-                                                                ) : (
-                                                                    <button
-                                                                        onClick={(e) => { e.stopPropagation(); addToCart(item); }}
-                                                                        className="w-8 h-8 flex items-center justify-center hover:bg-primary hover:text-white rounded-full transition-colors"
-                                                                        title="Add to Cart"
-                                                                    >
-                                                                        <Plus size={20} />
-                                                                    </button>
-                                                                )}
-                                                            </div>
-                                                        </div>
-                                                    </div>
-                                                </motion.div>
-                                            ))}
+                                                <div className="flex items-center gap-2 bg-white/5 rounded-full p-1">
+                                                    {cart[item.id] ? (
+                                                        <>
+                                                            <button
+                                                                onClick={() => removeFromCart(item.id)}
+                                                                className="p-1 hover:bg-white/10 rounded-full transition-colors text-red-400"
+                                                                title="Remove"
+                                                            >
+                                                                <Minus size={16} />
+                                                            </button>
+                                                            <span className="text-sm font-bold text-primary min-w-[20px] text-center">
+                                                                {cart[item.id].quantity}
+                                                            </span>
+                                                            <button
+                                                                onClick={() => addToCart(item)}
+                                                                className="p-1 hover:bg-white/10 rounded-full transition-colors text-green-400"
+                                                                title="Add"
+                                                            >
+                                                                <Plus size={16} />
+                                                            </button>
+                                                        </>
+                                                    ) : (
+                                                        <button
+                                                            onClick={() => addToCart(item)}
+                                                            className="p-2 hover:bg-primary hover:text-white rounded-full transition-colors"
+                                                            title="Add to Cart"
+                                                        >
+                                                            <Plus size={18} />
+                                                        </button>
+                                                    )}
+                                                </div>
+                                            </div>
                                         </div>
                                     </motion.div>
-                                )}
-                            </AnimatePresence>
+                                ))}
+                            </div>
                         </div>
                     );
                 })}
@@ -238,34 +205,6 @@ export const MenuCatalog = () => {
                         exit={{ y: 100, opacity: 0 }}
                         className="fixed bottom-0 left-0 right-0 z-50 p-4"
                     >
-                        {/* Free Delivery Celebration Banner */}
-                        <AnimatePresence>
-                            {totalPrice > 299 && (
-                                <motion.div
-                                    initial={{ y: 20, opacity: 0, scale: 0.95 }}
-                                    animate={{ y: 0, opacity: 1, scale: 1 }}
-                                    exit={{ y: 20, opacity: 0, scale: 0.95 }}
-                                    className="max-w-3xl mx-auto mb-2"
-                                >
-                                    <div className="bg-gradient-to-r from-pink-500 via-purple-500 to-indigo-500 p-[2px] rounded-xl shadow-lg">
-                                        <div className="bg-[#1a1a1a] rounded-xl p-3 flex items-center gap-3 relative overflow-hidden">
-                                            <div className="w-10 h-10 shrink-0 text-yellow-400 rotate-12 animate-pulse">
-                                                <CelebrationDoodle />
-                                            </div>
-                                            <div className="flex-1 z-10">
-                                                <p className="font-bold text-transparent bg-clip-text bg-gradient-to-r from-pink-400 to-yellow-400 text-sm">
-                                                    Yay! Free Delivery Unlocked!
-                                                </p>
-                                                <p className="text-xs text-gray-400">Valid for orders under 2 km radius.</p>
-                                            </div>
-                                            {/* Background Decoration */}
-                                            <div className="absolute top-0 right-0 w-16 h-16 bg-gradient-to-br from-pink-500/20 to-transparent blur-xl rounded-full translate-x-1/2 -translate-y-1/2" />
-                                        </div>
-                                    </div>
-                                </motion.div>
-                            )}
-                        </AnimatePresence>
-
                         <div className="max-w-3xl mx-auto bg-gray-900/95 backdrop-blur-md border border-white/10 rounded-2xl p-4 shadow-2xl shadow-black/50 flex items-center justify-between cursor-pointer" onClick={() => setIsCartOpen(!isCartOpen)}>
                             <div className="flex flex-col">
                                 <div className="flex items-center gap-2 text-gray-400 text-sm">
@@ -323,7 +262,25 @@ export const MenuCatalog = () => {
                                 </button>
                             </div>
 
-
+                            {/* Free Delivery Banner (In Cart) */}
+                            {totalPrice > 299 && (
+                                <div className="px-4 pt-4">
+                                    <div className="bg-gradient-to-r from-pink-500 via-purple-500 to-indigo-500 p-[2px] rounded-xl shadow-lg">
+                                        <div className="bg-[#1a1a1a] rounded-xl p-3 flex items-center gap-3 relative overflow-hidden">
+                                            <div className="w-10 h-10 shrink-0 text-yellow-400 rotate-12 animate-pulse">
+                                                <CelebrationDoodle />
+                                            </div>
+                                            <div className="flex-1 z-10">
+                                                <p className="font-bold text-sm text-glass-shine">
+                                                    Yay! Free Delivery Unlocked!
+                                                </p>
+                                                <p className="text-xs text-gray-400">Valid for orders under 2 km radius.</p>
+                                            </div>
+                                            <div className="absolute top-0 right-0 w-16 h-16 bg-gradient-to-br from-pink-500/20 to-transparent blur-xl rounded-full translate-x-1/2 -translate-y-1/2" />
+                                        </div>
+                                    </div>
+                                </div>
+                            )}
 
                             <div className="overflow-y-auto p-4 space-y-4 flex-1">
                                 {Object.values(cart).map((item) => (
