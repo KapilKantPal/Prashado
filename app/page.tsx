@@ -11,7 +11,6 @@ export default function Home() {
       <OpeningHours />
       <MenuCatalog />
       <Testimonials />
-      <ContactForm />
 
       <footer className="py-8 text-center text-gray-500 border-t border-white/5 bg-black">
         <p>&copy; {new Date().getFullYear()} Prashado Cloud Kitchen. All rights reserved.</p>
