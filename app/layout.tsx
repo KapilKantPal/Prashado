@@ -21,6 +21,10 @@ const dancingScript = Dancing_Script({
 export const metadata: Metadata = {
   title: "Prashado | Sattvik Cloud Kitchen",
   description: "Freshly prepared, hygienic vegetarian food made without onion and garlic. Sattvik Bites, Chill Vibes.",
+  icons: {
+    icon: "/logo-2.png",
+    apple: "/logo-2.png",
+  },
 };
 
 export default function RootLayout({
