@@ -2,7 +2,7 @@
 
 import React from 'react';
 import { Utensils } from 'lucide-react';
-import { PizzaDoodle, MomoDoodle, BeverageDoodle } from './Doodles';
+import { PizzaDoodle, MomoDoodle } from './Doodles';
 
 const TESTIMONIALS = [
     {
@@ -47,7 +47,7 @@ export const Testimonials = () => {
                 <div className="grid grid-cols-1 md:grid-cols-3 gap-8">
                     {TESTIMONIALS.map((t) => (
                         <div key={t.id} className="bg-card p-8 rounded-2xl border border-white/5 relative">
-                            <div className="text-primary text-4xl font-serif absolute top-4 left-6 opacity-30">"</div>
+                            <div className="text-primary text-4xl font-serif absolute top-4 left-6 opacity-30">&quot;</div>
                             <p className="text-gray-300 italic mb-6 relative z-10">{t.text}</p>
                             <div>
                                 <h4 className="font-bold text-white">{t.name}</h4>

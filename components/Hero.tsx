@@ -15,6 +15,7 @@ const BACKGROUND_IMAGES = [
 
 ];
 
+
 export const Hero = () => {
     const [currentImageIndex, setCurrentImageIndex] = useState(0);
 

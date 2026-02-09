@@ -2,6 +2,7 @@
 
 import React, { useState } from 'react';
 import { motion, AnimatePresence } from 'framer-motion';
+import Image from 'next/image';
 import { Plus, Minus, MessageCircle, Utensils, ChefHat, X, ChevronUp, ShoppingBag, ChevronDown } from 'lucide-react';
 
 import { MENU_DATA, MenuItem } from '@/data/menu';
@@ -52,7 +53,7 @@ export const MenuCatalog = () => {
 
     const isCategoryExpanded = (categoryId: string) => expandedCategories.includes(categoryId);
 
-    const addToCart = (item: MenuItem) => {
+    const addToCart = (item: MenuItem | CartItem) => {
         setCart((prev) => {
             const existing = prev[item.id];
             return {
@@ -168,7 +169,7 @@ export const MenuCatalog = () => {
                                                     <div className="w-24 h-24 shrink-0 bg-gray-800 rounded-xl overflow-hidden relative z-10">
                                                         <div className="w-full h-full bg-gradient-to-br from-gray-700 to-gray-800 flex items-center justify-center text-gray-500 text-xs text-center p-1 overflow-hidden">
                                                             {item.image ? (
-                                                                <img src={item.image} alt={item.name} className="w-full h-full object-cover" />
+                                                                <Image src={item.image} alt={item.name} fill className="object-cover" />
                                                             ) : (
                                                                 "No Image"
                                                             )}
@@ -361,7 +362,7 @@ export const MenuCatalog = () => {
                                             </button>
                                             <span className="font-bold w-6 text-center">{item.quantity}</span>
                                             <button
-                                                onClick={() => addToCart({ ...item, id: item.id } as any)}
+                                                onClick={() => addToCart(item)}
                                                 className="p-1 hover:bg-white/10 rounded-md text-green-400 transition-colors"
                                             >
                                                 <Plus size={18} />
