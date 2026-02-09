@@ -15,7 +15,7 @@ export default function Home() {
 
       <footer className="py-8 text-center text-gray-500 border-t border-white/5 bg-black">
         <p>&copy; {new Date().getFullYear()} Prashado Cloud Kitchen. All rights reserved.</p>
-        <p className="text-sm mt-2">267 Gyankhand-1, Indrapuram Ghaziabad, 201014</p>
+        <p className="text-sm mt-2">Gyankhand-1, Indrapuram Ghaziabad</p>
       </footer>
     </main>
   );
