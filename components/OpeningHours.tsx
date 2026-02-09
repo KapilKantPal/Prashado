@@ -76,8 +76,8 @@ export function OpeningHours() {
 
                         <div className="space-y-2 text-gray-300">
                             <p className="font-semibold text-white">Prashado Cloud Kitchen</p>
-                            <p>267 Gyankhand-1, Indrapuram</p>
-                            <p>Ghaziabad, 201014</p>
+                            <p>Gyankhand-1, Indrapuram</p>
+                            <p>Ghaziabad</p>
                             <a
                                 href="https://maps.app.goo.gl/fQUrkFcKVSpZasp96"
                                 target="_blank"
